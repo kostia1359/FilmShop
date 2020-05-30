@@ -1,0 +1,26 @@
+{
+  "name": "lab1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kostia1359/FilmShop.git"
+  },
+  "author": "Kostya Tsymbal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kostia1359/FilmShop/issues"
+  },
+  "homepage": "https://github.com/kostia1359/FilmShop#readme"
+}
