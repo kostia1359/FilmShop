@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 const routes = require('./server/api/routes/index');
 routes(app);
 
-app.use('/', express.static('./client'));
+app.use('/tables', express.static('./client'));
 
 
 app.listen(port, () => {});
