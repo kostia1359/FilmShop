@@ -28,7 +28,7 @@ router.put('/:id', async function (request, response, next) {
 
     await genreService.updateGenre(id, request.body);
 
-    response.data = {status: 'successfully updated'};
+    response.data = await genreService.getGenre(id);
 
     next();
 });
@@ -36,9 +36,11 @@ router.put('/:id', async function (request, response, next) {
 router.delete('/:id', async function (request, response, next) {
     const id = request.params.id;
 
+    const deletedGenre = await genreService.getGenre(id);
+
     await genreService.deleteGenre(id);
 
-    response.data = {status: 'successfully deleted'};
+    response.data = deletedGenre;
 
     next();
 })
