@@ -9,5 +9,7 @@ const Award = require('../models/award')(orm, Sequelize);
 const Description = require('../models/description')(orm, Sequelize);
 const Genre = require('../models/genre')(orm, Sequelize);
 
-associate({Film,Award,Description,Genre});
+associate({Film, Award, Description, Genre});
 
+
+module.exports = {Film, Award, Description, Genre};

@@ -1,7 +1,7 @@
-let dir=__dirname;
-dir=dir.slice(0,dir.lastIndexOf('\\')+1)+'.env';
+let dir = __dirname;
+dir = dir.slice(0, dir.lastIndexOf('\\') + 1) + '.env';
 
-require('dotenv').config({path:dir});
+require('dotenv').config({path: dir});
 
 const env = {
     db: {
@@ -10,7 +10,10 @@ const env = {
         password: process.env.DB_PASSWORD,
         host: process.env.DB_HOST,
         dialect: process.env.DB_DIALECT
+    },
+    app: {
+        port:process.env.PORT
     }
 }
 
-module.exports=env;
+module.exports = env;
