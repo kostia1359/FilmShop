@@ -28,7 +28,7 @@ router.put('/:id', async function (request, response, next) {
 
     await awardService.updateAward(id, request.body);
 
-    response.data = {status: 'successfully updated'};
+    response.data = await awardService.getAward(id);
 
     next();
 });
@@ -36,9 +36,11 @@ router.put('/:id', async function (request, response, next) {
 router.delete('/:id', async function (request, response, next) {
     const id = request.params.id;
 
+    const deletedAward = await awardService.getAward(id);
+
     await awardService.deleteAward(id);
 
-    response.data = {status: 'successfully deleted'};
+    response.data = deletedAward;
 
     next();
 })

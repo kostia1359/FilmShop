@@ -28,7 +28,7 @@ router.put('/:id', async function (request, response, next) {
 
     await descriptionService.updateDescription(id, request.body);
 
-    response.data = {status: 'successfully updated'};
+    response.data = descriptionService.getDescription(id);
 
     next();
 });
@@ -36,9 +36,11 @@ router.put('/:id', async function (request, response, next) {
 router.delete('/:id', async function (request, response, next) {
     const id = request.params.id;
 
+    const deletedDescription = await descriptionService.getDescription(id);
+
     await descriptionService.deleteDescription(id);
 
-    response.data = {status: 'successfully deleted'};
+    response.data = deletedDescription;
 
     next();
 })
