@@ -1,4 +1,8 @@
 import {createTable, deleteTable} from "./table.js";
+import {showModal} from "../components/modal.js";
+import {createElement} from "./domHelper.js";
+
+const serverUrl = 'http://localhost:3050/api/';
 
 function deleteEventListeners(element) {
     const new_element = element.cloneNode(true);
@@ -7,7 +11,8 @@ function deleteEventListeners(element) {
     return new_element;
 }
 
-function generateBtnEventListener(url, reloadButton) {
+function generateBtnEventListener(endpoint, reloadButton) {
+    const url = serverUrl + endpoint + '\/';
     const preloader = document.getElementById('preloader');
     const main = document.getElementsByTagName('main')[0];
     const inputRow = document.getElementById('inputRow');
@@ -20,8 +25,8 @@ function generateBtnEventListener(url, reloadButton) {
     return async function () {
         preloader.style.display = 'block';
 
-        saveButton=deleteEventListeners(saveButton);
-        inputRow.value='';
+        saveButton = deleteEventListeners(saveButton);
+        inputRow.value = '';
         deleteTable();
         let response = await fetch(url);
         let elements = await response.json();
@@ -42,6 +47,7 @@ function generateBtnEventListener(url, reloadButton) {
 
         addDeleteEventListeners();
         addEditEventListeners();
+        createButton.addEventListener('click', showCreatingModal);
 
         preloader.style.display = 'none';
     }
@@ -76,8 +82,8 @@ function generateBtnEventListener(url, reloadButton) {
     }
 
     function generateEditEventListener(i, j) {
-        const id = rowIdS[i-1];
-        const fieldToChange = sampleObjectKeys[j-2];
+        const id = rowIdS[i - 1];
+        const fieldToChange = sampleObjectKeys[j - 2];
         return async function () {
             inputRow.value = getCellText(i, j);
 
@@ -113,9 +119,77 @@ function generateBtnEventListener(url, reloadButton) {
             reloadButton.click();
         }
     }
-    
-    function generateCreateBtnEventListener() {
 
+    function showCreatingModal() {
+        showModal({title: endpoint, bodyElement: createModalBodyElement()});
+    }
+
+
+    function createModalBodyElement() {
+        const bodyForm = createElement({
+            tagName: 'form', className: 'modal-body',
+            attributes: {action: "", method: "get"}
+        });
+
+        sampleObjectKeys.forEach((key, id) => {
+            const div = createElement({tagName: 'div', className: 'createdField'});
+            const labelForInput = createElement({tagName: 'label', attributes: {for: `inputField${id}`}});
+            const inputField = createElement({
+                tagName: 'input',
+                attributes: {type: 'text', id: `inputField${id}`, name: key, required: ""}
+            });
+            labelForInput.innerText = `${key}:`;
+
+            div.append(labelForInput, inputField);
+            bodyForm.append(div);
+        })
+
+        const createButton = createElement({
+            tagName: 'button',
+            className: 'creatingButton',
+            attributes: {type: "submit"}
+        });
+        createButton.innerText = 'create';
+        createButton.addEventListener('click', generateCreateBtnEventListener());
+        bodyForm.append(createButton);
+
+        return bodyForm;
+
+        function createBodyElement() {
+            let inputs = Array.from(bodyForm.getElementsByTagName('input'));
+
+            const bodyElement = {};
+
+            inputs.forEach(input => bodyElement[input.name] = input.value);
+
+            return bodyElement;
+
+        }
+
+        function validateCreating() {
+            const inputs = Array.from(bodyForm.getElementsByTagName('input'));
+            const length = inputs.length;
+
+            console.log(inputs.filter(input => validateInput(input)));
+            return inputs.filter(input => validateInput(input)).length === length;
+        }
+
+        function generateCreateBtnEventListener() {
+
+            return async function () {
+                const objectBody=createBodyElement();
+                if (validateCreating()) {
+                    await fetch(url, apiHelper('POST', objectBody));
+
+                    alert('error');
+                }
+            }
+        }
+
+    }
+
+    function validateInput(input) {
+        return input.value.length !== 0;
     }
 }
 

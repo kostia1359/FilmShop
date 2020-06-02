@@ -1,6 +1,8 @@
 const {Router} = require('express');
 const awardService = require('../services/awardService');
 const {responseMiddleware} = require('../middlewares/responseMiddleware');
+const {errorMiddleware}=require('../middlewares/errorMiddleware');
+const {updateAwardValid, createAwardValid}=require('../validators/awardValidator');
 
 const router = Router();
 
@@ -17,13 +19,13 @@ router.get('/:id', async function (request, response, next) {
     next();
 })
 
-router.post('/', async function (request, response, next) {
+router.post('/',createAwardValid, async function (request, response, next) {
     response.data = await awardService.postAward(request.body);
 
     next()
 })
 
-router.put('/:id', async function (request, response, next) {
+router.put('/:id',updateAwardValid, async function (request, response, next) {
     const id = request.params.id;
 
     await awardService.updateAward(id, request.body);
@@ -46,5 +48,6 @@ router.delete('/:id', async function (request, response, next) {
 })
 
 router.use(responseMiddleware);
+router.use(errorMiddleware);
 
 module.exports = router;
