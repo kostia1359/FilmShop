@@ -1,6 +1,8 @@
 const {Router} = require('express');
 const genreService = require('../services/genreService');
 const {responseMiddleware} = require('../middlewares/responseMiddleware');
+const {errorMiddleware} = require('../middlewares/errorMiddleware');
+const {updateGenreValid, createGenreValid} = require('../validators/genreValidator');
 
 const router = Router();
 
@@ -17,13 +19,13 @@ router.get('/:id', async function (request, response, next) {
     next();
 })
 
-router.post('/', async function (request, response, next) {
+router.post('/', createGenreValid, async function (request, response, next) {
     response.data = await genreService.postGenre(request.body);
 
     next()
 })
 
-router.put('/:id', async function (request, response, next) {
+router.put('/:id', updateGenreValid, async function (request, response, next) {
     const id = request.params.id;
 
     await genreService.updateGenre(id, request.body);
@@ -46,5 +48,6 @@ router.delete('/:id', async function (request, response, next) {
 })
 
 router.use(responseMiddleware);
+router.use(errorMiddleware);
 
 module.exports = router;

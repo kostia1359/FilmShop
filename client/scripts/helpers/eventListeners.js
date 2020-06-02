@@ -16,8 +16,8 @@ function generateBtnEventListener(endpoint, reloadButton) {
     const preloader = document.getElementById('preloader');
     const main = document.getElementsByTagName('main')[0];
     const inputRow = document.getElementById('inputRow');
-    let saveButton = document.getElementById('save');
-    const createButton = document.getElementById('addRow');
+    let saveButton;
+    let createButton;
 
     const rowIdS = [];
     let sampleObjectKeys;
@@ -25,6 +25,8 @@ function generateBtnEventListener(endpoint, reloadButton) {
     return async function () {
         preloader.style.display = 'block';
 
+        createButton = document.getElementById('addRow');
+        saveButton = document.getElementById('save');
         saveButton = deleteEventListeners(saveButton);
         inputRow.value = '';
         deleteTable();
@@ -47,6 +49,8 @@ function generateBtnEventListener(endpoint, reloadButton) {
 
         addDeleteEventListeners();
         addEditEventListeners();
+
+        createButton = deleteEventListeners(createButton);
         createButton.addEventListener('click', showCreatingModal);
 
         preloader.style.display = 'none';
@@ -87,6 +91,7 @@ function generateBtnEventListener(endpoint, reloadButton) {
         return async function () {
             inputRow.value = getCellText(i, j);
 
+            console.log('generating');
             saveButton = deleteEventListeners(saveButton);
 
             saveButton.addEventListener('click', generateSaveBtnEventListener(fieldToChange, id));
@@ -144,14 +149,14 @@ function generateBtnEventListener(endpoint, reloadButton) {
             bodyForm.append(div);
         })
 
-        const createButton = createElement({
+        const createButtonModal = createElement({
             tagName: 'button',
             className: 'creatingButton',
             attributes: {type: "submit"}
         });
-        createButton.innerText = 'create';
-        createButton.addEventListener('click', generateCreateBtnEventListener());
-        bodyForm.append(createButton);
+        createButtonModal.innerText = 'create';
+        createButtonModal.addEventListener('click', generateCreateBtnEventListener());
+        bodyForm.append(createButtonModal);
 
         return bodyForm;
 
@@ -177,7 +182,7 @@ function generateBtnEventListener(endpoint, reloadButton) {
         function generateCreateBtnEventListener() {
 
             return async function () {
-                const objectBody=createBodyElement();
+                const objectBody = createBodyElement();
                 if (validateCreating()) {
                     await fetch(url, apiHelper('POST', objectBody));
 

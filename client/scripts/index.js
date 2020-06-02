@@ -1,13 +1,15 @@
 import {generateBtnEventListener,deleteEventListeners} from "./helpers/eventListeners.js";
 
-const url = 'http://localhost:3050/api/award/';
-
-
-
-
 window.onload = () => {
     const awardButton = document.getElementById('openAwardTable');
-    const f=generateBtnEventListener('award', awardButton);
+    const descriptionButton = document.getElementById('openDescriptionTable');
+    const genreButton = document.getElementById('openGenreTable');
 
-    awardButton.addEventListener('click', f);
+    const awardSelect=generateBtnEventListener('award', awardButton);
+    const descriptionSelect=generateBtnEventListener('description', descriptionButton);
+    const genreSelect=generateBtnEventListener('genre', genreButton);
+
+    descriptionButton.addEventListener('click',descriptionSelect);
+    genreButton.addEventListener('click',genreSelect);
+    awardButton.addEventListener('click', awardSelect);
 }
