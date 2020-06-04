@@ -91,7 +91,6 @@ function generateBtnEventListener(endpoint, reloadButton) {
         return async function () {
             inputRow.value = getCellText(i, j);
 
-            console.log('generating');
             saveButton = deleteEventListeners(saveButton);
 
             saveButton.addEventListener('click', generateSaveBtnEventListener(fieldToChange, id));
@@ -175,7 +174,6 @@ function generateBtnEventListener(endpoint, reloadButton) {
             const inputs = Array.from(bodyForm.getElementsByTagName('input'));
             const length = inputs.length;
 
-            console.log(inputs.filter(input => validateInput(input)));
             return inputs.filter(input => validateInput(input)).length === length;
         }
 
