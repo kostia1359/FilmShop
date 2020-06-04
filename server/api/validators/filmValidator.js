@@ -1,7 +1,7 @@
 const {createValid, updateValid} = require('./validator');
 const {awardValidator}=require('./awardValidator');
 
-const validator = {
+const createValidator={
     filmName: function (str) {
         if (str.length === 0) {
             throw Error('filmName should not be empty');
@@ -43,7 +43,11 @@ const validator = {
         })
 
         return filmGenres;
-    },
+    }
+}
+
+const updateValidator = {
+    ...createValidator,
 
     award:function (str) {
         let awardName=str.match(/\w+/);
@@ -72,7 +76,7 @@ const createFilmValid = (req, res, next)=>{
     const filmToValidate=req.body;
 
     try {
-        res.data=createValid(validator,filmToValidate);
+        res.data=createValid(createValidator,filmToValidate);
         next();
     }catch (e) {
         res.err=e;
@@ -84,7 +88,7 @@ const updateFilmValid = (req, res, next)=>{
     const filmToValidate=req.body;
 
     try{
-        res.data=updateValid(validator,filmToValidate);
+        res.data=updateValid(updateValidator,filmToValidate);
         next();
     }catch (e) {
         res.err=e;
