@@ -2,14 +2,14 @@ const {createValid,updateValid}=require('./validator');
 
 const validator={
     awardName:function (str) {
-        if (str.length === 0) {
+        if (!str || str.length === 0) {
             throw Error('awardName should not be empty');
         }
 
         return str;
     },
     nominationName: function (str) {
-        if (str.length === 0) {
+        if (!str || str.length === 0) {
             throw Error('nominationName should not be empty');
         }
 
@@ -51,4 +51,4 @@ const updateAwardValid = (req, res, next)=>{
 
 }
 
-module.exports={updateAwardValid,createAwardValid};
+module.exports={updateAwardValid,createAwardValid, awardValidator:validator};
