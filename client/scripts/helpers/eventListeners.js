@@ -35,17 +35,19 @@ function generateBtnEventListener(endpoint, reloadButton) {
 
         if (elements.length === 0) return;
 
+
+        const table = createTable(elements);
+
+        main.append(table);
+
         rowIdS.splice(0, rowIdS.length);
         elements.forEach(element => {
             rowIdS.push(element.id);
 
-            //delete element.id;
+            delete element.id;
         })
 
         sampleObjectKeys = Object.keys(elements[0]);
-        const table = createTable(elements);
-
-        main.append(table);
 
         addDeleteEventListeners();
         addEditEventListeners();

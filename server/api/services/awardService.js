@@ -20,7 +20,7 @@ class AwardService {
 
         const award= await AwardRepository.create(data);
 
-        AwardRepository.setAwardFilmCreating(award,assignedFilm);
+        await AwardRepository.setAwardFilmCreating(award,assignedFilm);
 
         return award;
     }

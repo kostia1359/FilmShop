@@ -1,17 +1,10 @@
 const baseRepository = require('./baseRepository');
-const {Film, Award, Description, Genre} = require('../models/index');
+const {Film} = require('../models/index');
 
-class AwardRepository extends baseRepository {
+class FilmRepository extends baseRepository {
     constructor() {
         super(Film);
     }
-
-    create(data, description, awards, genres) {
-        const film = super.create(data);
-
-        this.addAdditionalInfo(film,description,awards,genres);
-    }
-
 
     async getFilmAwards(id){
         const film=await this.getById(id);
@@ -25,8 +18,16 @@ class AwardRepository extends baseRepository {
         return await film.getGenres();
     }
 
-    setFilmGenresCreating(film,genres){
+    async setFilmGenresCreating(film,genres){
+        await film.setGenres(genres);
+    }
 
+    async setFilmAwardsCreating(film,award){
+        await film.setAwards(award);
+    }
+
+    async setFilmDescriptionCreating(film,description){
+        await film.setDescription(description);
     }
 
     async setFilmGenres(id, genres){
@@ -49,4 +50,4 @@ class AwardRepository extends baseRepository {
 
 }
 
-module.exports = new AwardRepository();
+module.exports = new FilmRepository();
