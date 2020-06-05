@@ -30,6 +30,18 @@ class AwardRepository extends baseRepository {
         film.removeGenres(genres);
     }
 
+    async getFilmAwards(id){
+        const film=await this.getById(id);
+
+        return await film.getAwards();
+    }
+
+    async getFilmGenres(id){
+        const film=await this.getById(id);
+
+        return await film.getGenres();
+    }
+
     addAdditionalInfo(film, description, awards, genres) {
         film.setDescription(description);
         film.addAwards(awards);
