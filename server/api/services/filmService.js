@@ -1,4 +1,6 @@
 const filmRepository = require('../../data/repositories/filmRepository');
+const genreService=require('../services/genreService');
+const awardService=require('../services/descriptionService');
 
 class FilmService {
     async getAll() {
@@ -15,7 +17,25 @@ class FilmService {
         return films;
     }
 
-    updateFilm(id, data) {
+    async updateFilm(id, data) {
+        if(data.hasOwnProperty('genres')){
+            await filmRepository.setFilmGenres(id,data.genres);
+
+            delete data['genres'];
+        }
+
+        if(data.hasOwnProperty('award')){
+            await filmRepository.setFilmAwards(id,data.award);
+
+            delete data['award'];
+        }
+
+        if(data.hasOwnProperty('descriptionId')){
+            await filmRepository.setFilmDescription(id,data.descriptionId);
+
+            delete data['descriptionId'];
+        }
+
         return filmRepository.updateById(id, data);
     }
 
@@ -47,6 +67,16 @@ class FilmService {
         })
 
         return {...film, genres, award};
+    }
+
+    async getFilmByID(id){
+        const film= await filmRepository.getById(id);
+
+        if(!film) {
+            throw Error('film with this id does not exist');
+        }
+
+        return film;
     }
 }
 

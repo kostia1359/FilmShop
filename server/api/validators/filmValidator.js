@@ -1,5 +1,7 @@
 const {createValid, updateValid} = require('./validator');
-const {awardValidator}=require('./awardValidator');
+const genreService=require('../services/genreService');
+const awardService=require('../services/awardService');
+const descriptionService=require('../services/descriptionService');
 
 const createValidator={
     filmName: function (str) {
@@ -33,50 +35,53 @@ const createValidator={
         return Number(str);
     },
 
-    genres:function (str) {
-        const filmGenres=str.split(/\s*,\s*/);
+    genres: async function (str) {
+        if(str.trim().length===0) return null;
+        let filmGenres=str.split(/\s*,\s*/);
 
-        filmGenres.forEach(genre=>{
-            if(genre.length===0) {
-                throw Error('genre should not be empty');
-            }
+        const genrePromises=filmGenres.map(genreID=>{
+            const id=validateNumericalID(genreID,'genre');
+
+            return genreService.getGenre(id);
         })
 
+        filmGenres = await Promise.all(genrePromises).catch(error=> {
+            throw error;
+        });
+
         return filmGenres;
+    },
+    descriptionId: async function (str) {
+       const id = validateNumericalID(str);
+
+        const description= await descriptionService.getDescription(id);
+
+        return description;
+    },
+    award:async function (str) {
+        if(str.trim().length===0) return null;
+        let filmAwards=str.split(/\s*,\s*/);
+
+        const awardPromises=filmAwards.map(awardID=>{
+            const id=validateNumericalID(awardID,'award');
+
+            return awardService.getAward(id);
+        })
+
+        filmAwards = await Promise.all(awardPromises).catch(error=> {
+            throw error;
+        });
+
+        return filmAwards;
     }
 }
 
-const updateValidator = {
-    ...createValidator,
 
-    award:function (str) {
-        let awardName=str.match(/\w+/);
-        if(awardName){
-            awardName=awardName[0];
-        }
-
-        let nominationName=str.match(/(?<=\w+\[)\w+(?=])/);
-        if(nominationName){
-            nominationName=nominationName[0];
-        }
-        const year=str.match(/(?<=]\[)\w+(?=])/);
-
-        const createdAward={awardName,nominationName,year};
-
-        try{
-            return createValid(awardValidator,createdAward);
-        }catch (e) {
-            throw Error(`Award is not valid`);
-        }
-    }
-}
-
-
-const createFilmValid = (req, res, next)=>{
+const createFilmValid = async (req, res, next)=>{
     const filmToValidate=req.body;
 
     try {
-        res.data=createValid(createValidator,filmToValidate);
+        res.data=await createValid(createValidator,filmToValidate);
         next();
     }catch (e) {
         res.err=e;
@@ -84,11 +89,11 @@ const createFilmValid = (req, res, next)=>{
     }
 }
 
-const updateFilmValid = (req, res, next)=>{
+const updateFilmValid = async (req, res, next)=>{
     const filmToValidate=req.body;
 
     try{
-        res.data=updateValid(updateValidator,filmToValidate);
+        res.data= await updateValid(createValidator,filmToValidate);
         next();
     }catch (e) {
         res.err=e;
@@ -98,3 +103,14 @@ const updateFilmValid = (req, res, next)=>{
 }
 
 module.exports={updateFilmValid,createFilmValid};
+
+
+function validateNumericalID(id, fieldName) {
+    const isNumeric = /^[0-9]+$/.test(id);
+
+    if (!isNumeric) {
+        throw Error(`${fieldName} ID should be a number`);
+    }
+
+    return Number(id);
+}

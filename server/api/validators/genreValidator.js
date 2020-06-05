@@ -10,11 +10,11 @@ const validator={
     }
 }
 
-const createGenreValid = (req, res, next)=>{
+const createGenreValid = async (req, res, next)=>{
     const genreToValidate=req.body;
 
     try {
-        res.data=createValid(validator,genreToValidate);
+        res.data= await createValid(validator,genreToValidate);
         next();
     }catch (e) {
         res.err=e;
@@ -22,11 +22,11 @@ const createGenreValid = (req, res, next)=>{
     }
 }
 
-const updateGenreValid = (req, res, next)=>{
+const updateGenreValid = async (req, res, next)=>{
     const genreToValidate=req.body;
 
     try{
-        res.data=updateValid(validator,genreToValidate);
+        res.data= await updateValid(validator,genreToValidate);
         next();
     }catch (e) {
         res.err=e;

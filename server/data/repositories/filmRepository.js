@@ -12,23 +12,6 @@ class AwardRepository extends baseRepository {
         this.addAdditionalInfo(film,description,awards,genres);
     }
 
-    async addFieldsById(id, data, description, awards, genres) {
-        const film = super.updateById(id, data);
-
-        this.addAdditionalInfo(film,description,awards,genres);
-    }
-
-    removeFilmAwards(id, awards){
-        const film=this.getById(id);
-
-        film.removeAwards(awards);
-    }
-
-    removeFilmGenres(id,genres){
-        const film=this.getById(id);
-
-        film.removeGenres(genres);
-    }
 
     async getFilmAwards(id){
         const film=await this.getById(id);
@@ -42,12 +25,27 @@ class AwardRepository extends baseRepository {
         return await film.getGenres();
     }
 
-    addAdditionalInfo(film, description, awards, genres) {
-        film.setDescription(description);
-        film.addAwards(awards);
-        film.addGenres(genres);
+    setFilmGenresCreating(film,genres){
+
     }
 
+    async setFilmGenres(id, genres){
+        const film=await this.getById(id);
+
+        film.setGenres(genres);
+    }
+
+    async setFilmDescription(id, description){
+        const film=await this.getById(id);
+
+        film.setDescription(description);
+    }
+
+    async setFilmAwards(id, awards){
+        const film=await this.getById(id);
+
+        film.setAwards(awards);
+    }
 
 }
 

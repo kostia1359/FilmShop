@@ -25,7 +25,7 @@ router.post('/', createFilmValid, async function (request, response, next) {
     next()
 })
 
-router.put('/:id', updateFilmValid, async function (request, response, next) {
+router.put('/:id',updateFilmValid, async function (request, response, next) {
     const id = request.params.id;
 
     await filmService.updateFilm(id, request.body);
@@ -48,6 +48,6 @@ router.delete('/:id', async function (request, response, next) {
 })
 
 router.use(responseMiddleware);
-// router.use(errorMiddleware);
+router.use(errorMiddleware);
 
 module.exports = router;

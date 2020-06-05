@@ -39,7 +39,7 @@ function generateBtnEventListener(endpoint, reloadButton) {
         elements.forEach(element => {
             rowIdS.push(element.id);
 
-            delete element.id;
+            //delete element.id;
         })
 
         sampleObjectKeys = Object.keys(elements[0]);

@@ -10,11 +10,11 @@ const validator={
     }
 }
 
-const createDescriptionValid = (req, res, next)=>{
+const createDescriptionValid = async (req, res, next)=>{
     const descriptionToValidate=req.body;
 
     try {
-        res.data=createValid(validator,descriptionToValidate);
+        res.data= await createValid(validator,descriptionToValidate);
         next();
     }catch (e) {
         res.err=e;
@@ -22,11 +22,11 @@ const createDescriptionValid = (req, res, next)=>{
     }
 }
 
-const updateDescriptionValid = (req, res, next)=>{
+const updateDescriptionValid = async (req, res, next)=>{
     const descriptionToValidate=req.body;
 
     try{
-        res.data=updateValid(validator,descriptionToValidate);
+        res.data=await updateValid(validator,descriptionToValidate);
         next();
     }catch (e) {
         res.err=e;

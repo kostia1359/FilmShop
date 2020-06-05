@@ -1,4 +1,5 @@
 const {createValid,updateValid}=require('./validator');
+const filmService=require('../services/filmService');
 
 const validator={
     awardName:function (str) {
@@ -23,14 +24,28 @@ const validator={
         }
 
         return Number(str);
+    },
+    filmId: async function (str) {
+        const isNumeric = /^[0-9]+$/.test(str);
+
+        if (!isNumeric) {
+            throw Error(`filmId should be a number`);
+        }
+
+        const id= Number(str);
+
+        const film = await filmService.getFilmByID(id);
+
+        return film;
     }
 }
 
-const createAwardValid = (req, res, next)=>{
+const createAwardValid = async (req, res, next)=>{
     const awardToValidate=req.body;
 
     try {
-        res.data=createValid(validator,awardToValidate);
+        res.data= await createValid(validator,awardToValidate);
+
         next();
     }catch (e) {
         res.err=e;
@@ -38,11 +53,11 @@ const createAwardValid = (req, res, next)=>{
     }
 }
 
-const updateAwardValid = (req, res, next)=>{
+const updateAwardValid = async (req, res, next)=>{
     const awardToValidate=req.body;
 
     try{
-        res.data=updateValid(validator,awardToValidate);
+        res.data= await updateValid(validator,awardToValidate);
         next();
     }catch (e) {
         res.err=e;

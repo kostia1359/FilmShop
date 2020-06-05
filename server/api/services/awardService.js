@@ -5,16 +5,32 @@ class AwardService {
         return AwardRepository.getAll();
     }
 
-    updateAward(id,data){
+    async updateAward(id,data){
+        if(data.hasOwnProperty('filmId')){
+            await AwardRepository.setAwardFilm(id,data.filmId);
+
+            delete data['filmId'];
+        }
         return AwardRepository.updateById(id,data);
     }
 
-    postAward(data){
-        return AwardRepository.create(data);
+    async postAward(data){
+        const assignedFilm=data['filmId'];
+        delete data['filmId'];
+
+        const award= await AwardRepository.create(data);
+
+        AwardRepository.setAwardFilmCreating(award,assignedFilm);
+
+        return award;
     }
 
     deleteAward(id){
         return AwardRepository.deleteById(id)
+    }
+    async setAwardFilm(id, film){
+
+
     }
 
     async getAward(id){
