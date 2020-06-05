@@ -43,6 +43,11 @@ function createTableRow(cells, cellTagName) {
 
         cellElement.innerText = cell;
 
+        if(Array.isArray(cell)){
+            const idList=cell.map(elem=>elem.id);
+            cellElement.innerText=idList.join(',');
+        }
+
         tr.append(cellElement);
     });
 

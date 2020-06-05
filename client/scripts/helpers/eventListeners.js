@@ -89,7 +89,7 @@ function generateBtnEventListener(endpoint, reloadButton) {
 
     function generateEditEventListener(i, j) {
         const id = rowIdS[i - 1];
-        const fieldToChange = sampleObjectKeys[j - 2];
+        const fieldToChange = sampleObjectKeys[j - 3];
         return async function () {
             inputRow.value = getCellText(i, j);
 

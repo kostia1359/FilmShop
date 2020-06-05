@@ -92,6 +92,7 @@ const createFilmValid = async (req, res, next)=>{
 const updateFilmValid = async (req, res, next)=>{
     const filmToValidate=req.body;
 
+    console.error('updating', req.body);
     try{
         res.data= await updateValid(createValidator,filmToValidate);
         next();
