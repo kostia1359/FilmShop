@@ -183,8 +183,6 @@ function generateBtnEventListener(endpoint, reloadButton) {
                 const objectBody = createBodyElement();
                 if (validateCreating()) {
                     await fetch(url, apiHelper('POST', objectBody));
-
-                    alert('error');
                 }
             }
         }

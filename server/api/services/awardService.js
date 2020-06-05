@@ -17,8 +17,14 @@ class AwardService {
         return AwardRepository.deleteById(id)
     }
 
-    getAward(id){
-        return AwardRepository.getById(id);
+    async getAward(id){
+        const award= await AwardRepository.getById(id);
+
+        if(!award){
+            throw Error('award with this description does not exist');
+        }
+
+        return award;
     }
 }
 

@@ -14,9 +14,16 @@ router.get('/', async function (request, response, next) {
 
 router.get('/:id', async function (request, response, next) {
     const id = request.params.id;
-    response.data = await descriptionService.getDescription(id);
+    try {
+        response.data = await descriptionService.getDescription(id);
 
-    next();
+        next();
+    } catch (e) {
+        response.err=e;
+
+        next('error');
+    }
+
 })
 
 router.post('/', createDescriptionValid, async function (request, response, next) {

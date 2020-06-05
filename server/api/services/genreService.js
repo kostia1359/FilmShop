@@ -17,8 +17,14 @@ class GenreService {
         return GenreRepository.deleteById(id)
     }
 
-    getGenre(id){
-        return GenreRepository.getById(id);
+    async getGenre(id){
+        const genre= await GenreRepository.getById(id);
+
+        if(!genre) {
+            throw Error('genre with this id does not exist');
+        }
+
+        return genre;
     }
 }
 

@@ -14,9 +14,16 @@ router.get('/', async function (request, response, next) {
 
 router.get('/:id', async function (request, response, next) {
     const id = request.params.id;
-    response.data = await genreService.getGenre(id);
+    try{
+        response.data = await genreService.getGenre(id);
 
-    next();
+        next();
+    }catch (e) {
+        response.err=e;
+
+        next('error');
+    }
+
 })
 
 router.post('/', createGenreValid, async function (request, response, next) {

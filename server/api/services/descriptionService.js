@@ -17,8 +17,14 @@ class DescriptionService {
         return DescriptionRepository.deleteById(id)
     }
 
-    getDescription(id){
-        return DescriptionRepository.getById(id);
+    async getDescription(id){
+        const description = await DescriptionRepository.getById(id);
+
+        if(!description){
+            throw Error('description with this id does not exist');
+        }
+
+        return description;
     }
 }
 
