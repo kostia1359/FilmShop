@@ -1,6 +1,5 @@
 const filmRepository = require('../../data/repositories/filmRepository');
-const genreService = require('../services/genreService');
-const awardService = require('../services/descriptionService');
+
 
 class FilmService {
     async getAll() {
