@@ -6,12 +6,12 @@ function createValid(validator, objectToValidate) {
     return updateValid(validator, objectToValidate);
 }
 
-function updateValid(validator, objectToValidate) {
+async function updateValid(validator, objectToValidate) {
     for (let key in objectToValidate) {
         if (!validator.hasOwnProperty(key)) {
             throw Error('Object contains extra field')
         }
-        objectToValidate[key] = validator[key](objectToValidate[key]);
+        objectToValidate[key] = await validator[key](objectToValidate[key]);
     }
 
     return objectToValidate;
