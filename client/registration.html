@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link rel="stylesheet" href="styles/registration.css">
+    <script src="scripts/registration.js"></script>
+</head>
+<body>
+<div id="authentication_div">
+    <div id="controllers">
+        <button id="sign_in">Sign In</button>
+        <button id="sign_up">Sign Up</button>
+    </div>
+    <form action="" method="post" class="user_form" id="login_form">
+        <div class="information_block">
+            <label for="login_email">Email:</label>
+            <input type="email" id="login_email" name="email" required>
+        </div>
+        <div class="information_block">
+            <label for="login_password">Password:</label>
+            <input type="password" id="login_password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <form action="" method="post" class="user_form" id="registration_form">
+        <div class="information_block">
+            <label for="registration_name">Name:</label>
+            <input type="text" id="registration_name" name="name" required>
+        </div>
+        <div class="information_block">
+            <label for="registration_password">Password:</label>
+            <input type="password" id="registration_password" name="password" required>
+        </div>
+        <div class="information_block">
+            <label for="registration_email">Email:</label>
+            <input type="email" id="registration_email" name="email" required>
+        </div>
+        <button type="submit">Create user</button>
+    </form>
+</div>
+</body>
+</html>
