@@ -1,18 +1,30 @@
-const {createValid,updateValid}=require('./validator');
+const {createValid, updateValid} = require('./validator');
+const userService = require('../services/userService');
+const encryptPassword = require('../../helpers/encryptPassword');
 
-const validator={
-    username: function (str) {
+const validator = {
+    username: async function (str) {
         if (str.length === 0) {
             throw Error('username should not be empty');
         }
 
+        const isUnique = !(await userService.findUser({username: str}));
+        if (!isUnique) {
+            throw Error('enter an unique username');
+        }
+
         return str;
     },
-    email: function (str) {
-        const isEmail=/[a-z0-9]+@[a-z]+\.[a-z]+/.test(str);
+    email: async function (str) {
+        const isEmail = /[a-z0-9]+@[a-z]+\.[a-z]+/.test(str);
 
-        if(!isEmail){
+        if (!isEmail) {
             throw Error('enter a valid email');
+        }
+
+        const isUnique = !(await userService.findUser({email: str}));
+        if (!isUnique) {
+            throw Error('enter an unique email');
         }
 
         return str;
@@ -23,32 +35,38 @@ const validator={
         }
 
         return str;
+    },
+    isEmailConfirmed: function (str) {
+        return str;
     }
 }
 
-const createUserValid = async (req, res, next)=>{
-    const userToValidate=req.body;
+const createUserValid = async (req, res, next) => {
+    const userToValidate = req.body;
+
+    if(!userToValidate.hasOwnProperty('isEmailConfirmed')){
+        userToValidate.isEmailConfirmed=encryptPassword(userToValidate.email);
+    }
 
     try {
-        res.data= await createValid(validator,userToValidate);
+        res.data = await createValid(validator, userToValidate);
         next();
-    }catch (e) {
-        res.err=e;
-        next('error');
+    } catch (e) {
+        res.status(400).send(e.message);
     }
 }
 
-const updateUserValid = async (req, res, next)=>{
-    const userToValidate=req.body;
+const updateUserValid = async (req, res, next) => {
+    const userToValidate = req.body;
 
-    try{
-        res.data= await updateValid(validator,userToValidate);
+    try {
+        res.data = await updateValid(validator, userToValidate);
         next();
-    }catch (e) {
-        res.err=e;
+    } catch (e) {
+        res.err = e;
         next('error');
     }
 
 }
 
-module.exports={updateUserValid,createUserValid};
+module.exports = {updateUserValid, createUserValid};

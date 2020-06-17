@@ -1,12 +1,5 @@
 const UserRepository = require('../../data/repositories/userRepository');
-const {salt} = require('../../env').app;
-const CryptoJS = require("crypto-js");
-
-function encryptPassword(password) {
-    return CryptoJS.PBKDF2(password, salt, {
-        keySize: 128 / 32
-    }).toString();
-}
+const encryptPassword=require('../../helpers/encryptPassword');
 
 class UserService {
     getAll() {
@@ -31,16 +24,21 @@ class UserService {
         return UserRepository.deleteById(id)
     }
 
-    async validatePassword(userName, password) {
-        const user = await UserRepository.search({userName});
-        const encryptedPassword = encryptPassword(password);
+    async findUser(search){
+        const user=await UserRepository.search(search);
 
-        if (!user) {
-            return false;
-        }
-        return user.password === encryptedPassword;
+        return user;
     }
 
+    async getUser(id){
+        const genre= await UserRepository.getById(id);
+
+        if(!genre) {
+            throw Error('user with this id does not exist');
+        }
+
+        return genre;
+    }
 }
 
 module.exports = new UserService();

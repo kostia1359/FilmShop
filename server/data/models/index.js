@@ -12,4 +12,8 @@ const User = require('../models/user')(orm, Sequelize);
 
 associate({Film, Award, Description, Genre});
 
+(async function(){
+    orm.sync();
+})();
+
 module.exports = {Film, Award, Description, Genre, User};

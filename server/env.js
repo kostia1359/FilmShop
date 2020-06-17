@@ -15,6 +15,10 @@ const env = {
         port:process.env.PORT,
         key:process.env.SECRET_KEY,
         salt:process.env.SALT
+    },
+    mail: {
+        user:process.env.GMAIL_USER,
+        pass:process.env.GMAIL_PASSWORD
     }
 }
 
