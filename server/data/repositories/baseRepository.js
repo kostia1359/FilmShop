@@ -3,6 +3,12 @@ class BaseRepository {
         this.model = model;
     }
 
+    search(search) {
+        return this.model.findOne(
+            {where: search}
+            );
+    }
+
     getAll() {
         return this.model.findAll();
     }
@@ -24,9 +30,9 @@ class BaseRepository {
 
     deleteById(id) {
         return this.model.destroy({
-            where: { id }
+            where: {id}
         });
     }
 }
 
-module.exports=BaseRepository;
+module.exports = BaseRepository;
