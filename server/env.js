@@ -12,7 +12,9 @@ const env = {
         dialect: process.env.DB_DIALECT
     },
     app: {
-        port:process.env.PORT
+        port:process.env.PORT,
+        key:process.env.SECRET_KEY,
+        salt:process.env.SALT
     }
 }
 
