@@ -9,7 +9,10 @@ const {port} = require('../../env').app;
 const {mail} = require('../../env');
 
 const transporter = nodemailer.createTransport({
-    service:'gmail',
+    pool:true,
+    host:"smtp.ukr.net",
+    port:465,
+    secure:true,
     auth: {
         ...mail
     }
