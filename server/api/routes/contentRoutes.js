@@ -14,4 +14,9 @@ router.get('/tables',mustAuthenticated, function (request,response) {
     response.sendFile(clientDirectory+'index.html');
 })
 
+router.post('/tables', mustAuthenticated,function (request, response) {
+    console.log('123');
+    response.redirect('/content/tables');
+})
+
 module.exports = router;

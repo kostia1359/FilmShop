@@ -134,7 +134,7 @@ function generateBtnEventListener(endpoint, reloadButton) {
     function createModalBodyElement() {
         const bodyForm = createElement({
             tagName: 'form', className: 'modal-body',
-            attributes: {action: "", method: "get"}
+            attributes: {action: "", method: "post"}
         });
 
         sampleObjectKeys.forEach((key, id) => {
