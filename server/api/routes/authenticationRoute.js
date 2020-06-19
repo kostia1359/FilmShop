@@ -34,6 +34,11 @@ const router = Router();
 
 router.post('/login', authenticate);
 
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/content/registration');
+});
+
 router.post('/registration', createUserValid, function (request, response) {
     const user=request.body;
     userService.postUser(user);
