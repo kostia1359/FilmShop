@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View</title>
+</head>
+<body>
+<button id="getImage" hidden>Get random film image</button>
+<div id="header"></div>
+<div id="year"></div>
+<div id="rating"></div>
+<div id="description"></div>
+<div id="genres">genres:</div>
+
+<img src="" id="randomImg">
+<script>
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+    const img=document.getElementById('randomImg');
+    const getRandom=document.getElementById('getImage');
+    (async function btnListener() {
+        const films=await fetch('http://localhost:3050/api/film').then(data=>data.json());
+
+        const number=getRandomInt(films.length-1);
+        const film=films[number];
+
+        const description=await fetch(`http://localhost:3050/api/description/${film.descriptionId}`)
+            .then(data=>data.json());
+
+        document.getElementById('description').innerText+=description.description;
+        document.getElementById('header').innerText+=film.filmName;
+        document.getElementById('year').innerText+=film.year;
+        document.getElementById('rating').innerText+=film.rating;
+
+
+        const filmName=film.filmName.trim().replace(/ /g,'-').toLowerCase();
+        const filmYear=film.year;
+
+        const url=`http://localhost:3050/content/filmImage/${filmYear}/${filmName}`;
+        console.log(url);
+        const filmImage=await fetch(url).then(data=>data.json());
+
+        console.log(filmImage.img);
+        img.src=filmImage.img;
+    })()
+
+    getRandom.addEventListener('click', btnListener);
+</script>
+</body>
+</html>
