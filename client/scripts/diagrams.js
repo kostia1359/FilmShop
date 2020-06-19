@@ -1,5 +1,4 @@
-const url='http://localhost:3050/api/';
-window.onload=async ()=>{
+(async ()=>{
     const chart = am4core.create("chartdiv", am4charts.PieChart);
 
     const films=await fetch(`${url}film`).then(data=>data.json());
@@ -40,4 +39,4 @@ window.onload=async ()=>{
     pieSeries.slices.template.strokeWidth = 2;
     pieSeries.slices.template.strokeOpacity = 1;
 
-}
+})()

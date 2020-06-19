@@ -13,10 +13,11 @@ window.onload = async () => {
         doc.addSection({
             properties: {},
             children: [
+                createCellText("descriptions"),
                 createTable(descriptions),
-                createCellText(""),
+                createCellText("genres"),
                 createTable(genres),
-                createCellText(""),
+                createCellText("awards"),
                 createTable(awards)
             ],
         });

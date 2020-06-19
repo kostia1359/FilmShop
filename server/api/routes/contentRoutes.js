@@ -19,4 +19,9 @@ router.post('/tables', mustAuthenticated,function (request, response) {
     response.redirect('/content/tables');
 })
 
+router.get('/additional',function (request,response) {
+
+    response.sendFile(clientDirectory+'additional.html');
+})
+
 module.exports = router;
