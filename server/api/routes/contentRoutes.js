@@ -26,11 +26,9 @@ router.get('/filmImage/:year/:filmName',async function (req,response) {
     const filmName = req.params.filmName;
     let img;
     await request(`https://www.joblo.com/movie-posters/${year}/${filmName}`, function(err, res, body) {
-        const lastIndex=body.indexOf('<a class="poster-image-ralated"');
-        const srcIndex=body.indexOf('<img src="',lastIndex)+10;
-        const lastSrcIndex=body.indexOf('"',srcIndex);
+        const filmPosterLink=body.match(/<a class="poster-image-ralated" [^]+?img src="(.+?)"[^]+?<\/a>/m)[1];
 
-        img='https://www.joblo.com'+body.slice(srcIndex,lastSrcIndex);
+        img='https://www.joblo.com'+filmPosterLink;
         response.status(200).send({img});
     });
 })
