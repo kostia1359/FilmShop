@@ -52,3 +52,8 @@ td {
 td{
     cursor: pointer;
 }
+#logout{
+    top:45px;
+    right: 0;
+    position: absolute;
+}

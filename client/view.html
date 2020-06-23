@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View</title>
+    <style>
+        body{
+            color: #fafaf6;
+            background: #660066;
+        }
+        #header{
+            font-size: 30px;
+        }
+        .film{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        img{
+            width: 300px;
+        }
+        #description{
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<button id="getImage" hidden>Get random film image</button>
+<div class="film">
+    <div id="header"></div>
+    <img src="" id="randomImg">
+    <div id="description">Description:</div>
+    <div id="year">Year:</div>
+    <div id="rating">Rating:</div>
+    <div id="genres">genres:</div>
+</div>
+
+
+<script>
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+    const img=document.getElementById('randomImg');
+    const getRandom=document.getElementById('getImage');
+    (async function btnListener() {
+        const films=await fetch('http://localhost:3050/api/film').then(data=>data.json());
+
+        const number=getRandomInt(films.length-1);
+        const film=films[number];
+
+        const description=await fetch(`http://localhost:3050/api/description/${film.descriptionId}`)
+            .then(data=>data.json());
+
+        document.getElementById('description').innerText+=description.description;
+        document.getElementById('header').innerText+=film.filmName;
+        document.getElementById('year').innerText+=film.year;
+        document.getElementById('rating').innerText+=film.rating;
+        const genres=film.genres;
+        const genreDiv=document.getElementById('genres');
+        genres.forEach(genre=>{
+            genreDiv.innerText+=genre.genreName+',';
+        });
+        genreDiv.innerText=genreDiv.innerText.slice(0,genreDiv.innerText.length-1);
+
+        const filmName=film.filmName.trim().replace(/ /g,'-').toLowerCase();
+        const filmYear=film.year;
+
+        const url=`http://localhost:3050/content/filmImage/${filmYear}/${filmName}`;
+        console.log(url);
+        const filmImage=await fetch(url).then(data=>data.json());
+
+        console.log(filmImage.img);
+        img.src=filmImage.img;
+    })()
+
+    getRandom.addEventListener('click', btnListener);
+</script>
+</body>
+</html>

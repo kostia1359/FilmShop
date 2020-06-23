@@ -5,6 +5,7 @@ window.onload = () => {
     const descriptionButton = document.getElementById('openDescriptionTable');
     const genreButton = document.getElementById('openGenreTable');
     const filmButton = document.getElementById('openFilmTable');
+    const logOutButton=document.getElementById('logout');
 
     const awardSelect=generateBtnEventListener('award', awardButton);
     const descriptionSelect=generateBtnEventListener('description', descriptionButton);
@@ -15,4 +16,8 @@ window.onload = () => {
     genreButton.addEventListener('click',genreSelect);
     awardButton.addEventListener('click', awardSelect);
     filmButton.addEventListener('click', filmSelect);
+    logOutButton.addEventListener('click', async ()=>{
+        await fetch('http://localhost:3050/users/logout');
+        document.location.reload(true);
+    })
 }
